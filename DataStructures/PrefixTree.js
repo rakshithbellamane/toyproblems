@@ -3,22 +3,28 @@ class PrefixTree {
   children = {};
   isWord = false;
 
+
   addWord (word) {
     let parent = this;
     let node = null;
 
+    // loop through each char in the word
     for (let i=0; i<word.length; i++) {
       let letter = word[i];
 
+      // if the parent already has a children with the letter make that child as the parent and follow that path
       if (parent.children[letter]) {
         parent = parent.children[letter];
       } else {
+        // create a new node/tree for the letter and make the node as the child of the parent
         node = new PrefixTree();
         node.letter = letter;
         parent.children[letter] = node;
         parent = node;
       }
     }
+
+    // finally at the end of the word, mark the last node for the word as isWord = true;
     node.isWord = true;
   }
 
@@ -27,36 +33,46 @@ class PrefixTree {
     let node = null;
     let i;
 
+    // loop through each char in the given word
     for (i=0; i<word.length; i++) {
       let letter = word[i];
+      // see if there is a child for the letter
       node = parent.children[letter];
 
+      // if yes, make it the parent and follow down the tree
       if (node) {
         parent = node;
       } else {
+        // else there is no word. Break 
         break;
       }
     }
 
+    // finally check if i is same as word's length which means we found the entire word in the tree
     return (i === word.length) ? true : false;
   }
 
+  // this function finds all the words in the Trie. This function is recursive.
   findAllWords (prefix, words) {
+    // if the current node has a word marker, then push the prefix which will be a word
     if (this.isWord) {
       words.push(prefix);
     }  
     
+    // for each letter/child of the parent, follow the paths adding the letter to the prefix
     Object.keys(this.children).forEach(letter => {
       this.children[letter].findAllWords(prefix+letter, words);
     });
   }
 
+  // this function finds all the words that starts with the given prefix
   findWordsWithPrefix (prefix) {
     let words = [];
     let parent = this;
     let node = null;
     let i;
 
+    // loop through each letter in the prefix and follow the path for the prefix if it exists.
     for (i=0; i< prefix.length; i++) {
       let letter = prefix[i];
       node = parent.children[letter];
@@ -68,6 +84,7 @@ class PrefixTree {
       }
     }
 
+    // if i = length of the prefix, then we have reached the node corresponding to the prefix. After this we need to find all the words from there
     if (i === prefix.length) {
       parent.findAllWords(prefix, words);
     }
