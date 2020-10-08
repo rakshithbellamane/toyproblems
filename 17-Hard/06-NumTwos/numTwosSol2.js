@@ -1,3 +1,4 @@
+// *** this is not working *** please see example in book
 const findNumTwo = input => {
   let num = input;
   let count = 0;
