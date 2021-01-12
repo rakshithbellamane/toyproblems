@@ -88,7 +88,8 @@ class Heap {
 
 let minHeap = new Heap('min');
 let maxHeap = new Heap('max');
-let arr = [9,3,5,1,8,16,8,7,6,10];
+// let arr = [9,3,5,1,8,16,8,7,6,10];
+let arr = [5,7,1,3,2,8,4,6,9];
 
 arr.forEach(num => minHeap.insert(num));
 console.log(`minHeap initial storage: ${minHeap.storage}`);
