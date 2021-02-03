@@ -1,30 +1,29 @@
 const find_permutation = function(str, pattern) {
-  let winStart = 0;
+  let start = 0;
   let anagrams = [];
+  let count = 0;
+
   
-  let patternMap = getPatternMap(pattern);
-  let map = Object.assign({},patternMap);
+  let map = getPatternMap(pattern);
 
   for (let winEnd = 0; winEnd < str.length; winEnd++) {
     let char = str[winEnd];
-    if (!map[char]) {
-      if (typeof map[char] === 'undefined') {
-        map = Object.assign({}, patternMap);
-        winStart = winEnd + 1;
-      } else {
-        map[str[winStart]]++;
-        winStart++;
-      }
-      
-      continue;
+
+    if (char in map) {
+      map[char]--;
+      if (map[char] === 0)
+        count++;
     }
 
-    map[char]--;
+    if (count === Object.keys(map).length) {
+      anagrams.push(start);
+    }
 
-    if (winEnd-winStart+1 === pattern.length) {
-      anagrams.push(winStart);
-      map[str[winStart]]++;
-      winStart++;
+    if (winEnd >= pattern.length-1) {
+      if (map[str[start]] === 0)
+        count--;
+      map[str[start]]++;
+      start++;
     }
   }
 
@@ -42,4 +41,4 @@ const getPatternMap = function(pattern) {
   return patternMap;
 };
 
-console.log(find_permutation('abbcabc', 'abc'));
+console.log(find_permutation('ppqp', 'pq'));
