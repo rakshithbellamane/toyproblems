@@ -10,13 +10,18 @@ const findFreeHrs = hrs => {
   let sortedHrs = allHrs.sort((a,b) => a[0]-b[0]);
 
   let freeHrs = [];
+  prev = sortedHrs[0];
   for (let i=1; i<sortedHrs.length; i++) {
-    if (sortedHrs[i][0] > sortedHrs[i-1][1])
+    let cur = sortedHrs[i];
+    if (cur[0] > prev[1])
       freeHrs.push([sortedHrs[i-1][1], sortedHrs[i][0]]);
+
+    if (prev[1] < cur[1])
+      prev = cur;
   }
 
   return freeHrs;
 }
 
-const hrs = [[[1,3], [9,12]], [[2,4]], [[6,8]]];
+const hrs = [[[1,7], [9,12]], [[2,4]], [[6,8]]];
 console.log(findFreeHrs(hrs));
